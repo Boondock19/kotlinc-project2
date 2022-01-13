@@ -1,11 +1,11 @@
 package ve.usb.grafoLib
 
-public class Arista(val v: Int,val u: Int, val peso: Double =0.0) : Comparable<Arista>, Lado(v, u) {
+public class Arista(val v: Int,val u: Int, val peso: Double =0.0,val pesoUToV: Double =0.0) : Comparable<Arista>, Lado(v, u) {
      
        // val arista = Triple(v,u,peso)
      
         val aristaPeso = peso
-
+        val aristaPesoUToV = pesoUToV
      
      
      /*

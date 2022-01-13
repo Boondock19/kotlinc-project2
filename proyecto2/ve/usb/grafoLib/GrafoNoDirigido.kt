@@ -73,6 +73,92 @@ public class GrafoNoDirigido: Grafo {
     
     }
 
+    // Constructor para el proyecto 2, con doble peso en los lados
+
+    constructor(nombreArchivo: String, conPeso: Boolean,conPesoUToV:Boolean) {
+        var flag = conPeso
+        
+        //fun para leer y almacenar data de txts en forma de lista
+        
+        File(nombreArchivo).useLines{ lines -> lines.forEach { this.listaArchivo.add(it) }}
+        
+        // Almacenamos data del grafo como cantidad de vertices y lados
+        
+       this.numVertices = listaArchivo[2].split("VERTICES : ")[1].split(" ")[1].split(" ")[0].toInt()
+       println("Vertices del grafo  : ${this.numVertices}")
+       this.numLados = listaArchivo[3].split("ARISTAS_REQ : ")[1].split(" ")[1].split(" ")[0].toInt()
+       println("lados requeridos del grafo : ${this.numLados}")
+       
+        var primeraSeparacion = listaArchivo.indexOf("LISTA_ARISTAS_REQ :")
+        var  listaLadosReq = listaArchivo.subList((primeraSeparacion+1), listaArchivo.size)
+       // println("Esta es  primera separacion ${listaLadosReq}")
+       // println("Esta es la posicion de la primera separacion ${primeraSeparacion}")
+        var segundaSeparacion = listaLadosReq.indexOf("LISTA_ARISTAS_NOREQ :")
+       // println("Esta es la posicion de la primera separacion ${segundaSeparacion}")
+        var listaLadosNoRequeridos = listaLadosReq.subList((segundaSeparacion+1), listaLadosReq.size)
+        //println("Esta es  primera separacion ${listaLadosNoRequeridos}")
+
+        // Lectura de una linea para crear una Arista.
+
+        var aristaFiltro = listaLadosReq[0].split(" ")
+        aristaFiltro = aristaFiltro.filterNot { it == "(" }
+        aristaFiltro = aristaFiltro.filterNot { it == ")" }
+        aristaFiltro = aristaFiltro.filterNot { it == " " }
+        aristaFiltro = aristaFiltro.filterNot { it == "" }
+         aristaFiltro = aristaFiltro.filterNot { it == "coste" }
+         aristaFiltro = aristaFiltro.filterNot { it == "," }
+         var filtroSinComas = aristaFiltro[0].replace(",","")
+         var filtro = aristaFiltro[1].replace(")","")
+         var  newArista = aristaFiltro.toMutableList()
+         newArista.set(0,filtroSinComas)
+         newArista.set(1,filtro)
+         //newArista[1] = filtro
+        //newArista.replace("coste","")
+        /*  
+        newArista = newArista.replace("(","")
+        newArista = newArista.replace(")","")
+        newArista = newArista.replace("coste","")
+        newArista = newArista.replace(" ","")
+        */
+        /* */
+        var aristaFiltro2 = listaLadosReq[70].split(" ")
+        aristaFiltro2 = aristaFiltro2.filterNot { it == "(" }
+        aristaFiltro2 = aristaFiltro2.filterNot { it == ")" }
+        aristaFiltro2 = aristaFiltro2.filterNot { it == " " }
+        aristaFiltro2 = aristaFiltro2.filterNot { it == "" }
+         aristaFiltro2 = aristaFiltro2.filterNot { it == "coste" }
+         aristaFiltro2 = aristaFiltro2.filterNot { it == "," }
+         var filtroSinComas2 = aristaFiltro2[0].replace(",","")
+         var filtro2 = aristaFiltro2[1].replace(")","")
+         var  newArista2 = aristaFiltro2.toMutableList()
+         newArista2.set(0,filtroSinComas2)
+         newArista2.set(1,filtro2) 
+         println("Esta es la expresion original de una linea ${newArista}")
+          println("Esta 0 ${newArista[0]}")
+           println("Esta 1 ${newArista[1]}")
+          println("Esta es la expresion original de una linea ${newArista2}")
+
+           /* 
+           this.listaLadosReq.forEach { 
+            var aristaFiltro = it.split(" ")
+            aristaFiltro = aristaFiltro.filterNot { it == "(" }
+            aristaFiltro = aristaFiltro.filterNot { it == ")" }
+            aristaFiltro = aristaFiltro.filterNot { it == " " }
+            aristaFiltro = aristaFiltro.filterNot { it == "" }
+            aristaFiltro = aristaFiltro.filterNot { it == "coste" }
+            aristaFiltro = aristaFiltro.filterNot { it == "," }
+            var filtroSinComas = aristaFiltro[0].replace(",","")
+            var filtro = aristaFiltro[1].replace(")","")
+            var  filtrado = aristaFiltro.toMutableList()
+            filtrado.set(0,filtroSinComas)
+            filtrado.set(1,filtro)
+            
+            val newArista = Arista(filtrado[0].toInt(),filtrado[1].toInt(),filtrado[2].toDouble(),filtrado[2].toDouble())
+            this.listaAristas.add(newArista)
+        }
+        */
+    }
+
     // Agrega un lado al grafo no dirigido
     fun agregarArista(a: Arista) {
         val newArista = a
