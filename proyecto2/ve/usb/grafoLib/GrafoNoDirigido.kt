@@ -70,6 +70,8 @@ public class GrafoNoDirigido: Grafo {
                 var aristasFiltrada = this.listaAristas.filter {it.primerV == index }
                 this.grafo.set(index, aristasFiltrada.toMutableList()) 
             }
+
+            
     
     }
 
@@ -88,18 +90,28 @@ public class GrafoNoDirigido: Grafo {
        println("Vertices del grafo  : ${this.numVertices}")
        this.numLados = listaArchivo[3].split("ARISTAS_REQ : ")[1].split(" ")[1].split(" ")[0].toInt()
        println("lados requeridos del grafo : ${this.numLados}")
+
+       for ( i in 0..numVertices-1){
+            this.listaVertices.add(i)
+        }
+       this.grafo = Array(this.numVertices) {mutableListOf<Arista>()}
        
         var primeraSeparacion = listaArchivo.indexOf("LISTA_ARISTAS_REQ :")
-        var  listaLadosReq = listaArchivo.subList((primeraSeparacion+1), listaArchivo.size)
+        var segundaSeparacion = listaArchivo.indexOf("LISTA_ARISTAS_NOREQ :")
+
+        println("Valor de primera separacion ${primeraSeparacion}")
+        println("Valor de primera separacion ${segundaSeparacion}")
+        var  listaLadosReq = listaArchivo.subList((primeraSeparacion+1), segundaSeparacion)
+        
        // println("Esta es  primera separacion ${listaLadosReq}")
        // println("Esta es la posicion de la primera separacion ${primeraSeparacion}")
-        var segundaSeparacion = listaLadosReq.indexOf("LISTA_ARISTAS_NOREQ :")
+        
        // println("Esta es la posicion de la primera separacion ${segundaSeparacion}")
-        var listaLadosNoRequeridos = listaLadosReq.subList((segundaSeparacion+1), listaLadosReq.size)
+        var listaLadosNoRequeridos = listaArchivo.subList((segundaSeparacion+1), listaArchivo.size)
         //println("Esta es  primera separacion ${listaLadosNoRequeridos}")
 
         // Lectura de una linea para crear una Arista.
-
+        /*
         var aristaFiltro = listaLadosReq[0].split(" ")
         aristaFiltro = aristaFiltro.filterNot { it == "(" }
         aristaFiltro = aristaFiltro.filterNot { it == ")" }
@@ -112,6 +124,7 @@ public class GrafoNoDirigido: Grafo {
          var  newArista = aristaFiltro.toMutableList()
          newArista.set(0,filtroSinComas)
          newArista.set(1,filtro)
+         */
          //newArista[1] = filtro
         //newArista.replace("coste","")
         /*  
@@ -120,7 +133,7 @@ public class GrafoNoDirigido: Grafo {
         newArista = newArista.replace("coste","")
         newArista = newArista.replace(" ","")
         */
-        /* */
+        /* 
         var aristaFiltro2 = listaLadosReq[70].split(" ")
         aristaFiltro2 = aristaFiltro2.filterNot { it == "(" }
         aristaFiltro2 = aristaFiltro2.filterNot { it == ")" }
@@ -137,10 +150,10 @@ public class GrafoNoDirigido: Grafo {
           println("Esta 0 ${newArista[0]}")
            println("Esta 1 ${newArista[1]}")
           println("Esta es la expresion original de una linea ${newArista2}")
-
-           /* 
-           this.listaLadosReq.forEach { 
-            var aristaFiltro = it.split(" ")
+        */
+           
+           listaLadosReq.forEach { line ->
+            var aristaFiltro = line.split(" ")
             aristaFiltro = aristaFiltro.filterNot { it == "(" }
             aristaFiltro = aristaFiltro.filterNot { it == ")" }
             aristaFiltro = aristaFiltro.filterNot { it == " " }
@@ -156,7 +169,15 @@ public class GrafoNoDirigido: Grafo {
             val newArista = Arista(filtrado[0].toInt(),filtrado[1].toInt(),filtrado[2].toDouble(),filtrado[2].toDouble())
             this.listaAristas.add(newArista)
         }
-        */
+
+            this.grafo.forEachIndexed { index, lista ->
+                var aristasFiltrada = this.listaAristas.filter {it.primerV == index }
+                this.grafo.set(index, aristasFiltrada.toMutableList()) 
+            }
+
+            println("Print del grafo luego de organizarlo : ${this.grafo.joinToString()}")
+             println("Print del listaAristas : ${this.listaAristas}")
+        
     }
 
     // Agrega un lado al grafo no dirigido
