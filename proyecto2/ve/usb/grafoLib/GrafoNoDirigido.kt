@@ -77,8 +77,8 @@ public class GrafoNoDirigido: Grafo {
 
     // Constructor para el proyecto 2, con doble peso en los lados
 
-    constructor(nombreArchivo: String, conPeso: Boolean,conPesoUToV:Boolean) {
-        var flag = conPeso
+    constructor(nombreArchivo: String, conPeso: Boolean, RPP:Boolean) {
+        var flag = RPP
         
         //fun para leer y almacenar data de txts en forma de lista
         
@@ -87,9 +87,9 @@ public class GrafoNoDirigido: Grafo {
         // Almacenamos data del grafo como cantidad de vertices y lados
         
        this.numVertices = listaArchivo[2].split("VERTICES : ")[1].split(" ")[1].split(" ")[0].toInt()
-       println("Vertices del grafo  : ${this.numVertices}")
+       println("\nVertices del grafo  : ${this.numVertices}")
        this.numLados = listaArchivo[3].split("ARISTAS_REQ : ")[1].split(" ")[1].split(" ")[0].toInt()
-       println("lados requeridos del grafo : ${this.numLados}")
+       println("\nlados requeridos del grafo : ${this.numLados}")
 
        for ( i in 0..numVertices-1){
             this.listaVertices.add(i)
@@ -99,8 +99,8 @@ public class GrafoNoDirigido: Grafo {
         var primeraSeparacion = listaArchivo.indexOf("LISTA_ARISTAS_REQ :")
         var segundaSeparacion = listaArchivo.indexOf("LISTA_ARISTAS_NOREQ :")
 
-        println("Valor de primera separacion ${primeraSeparacion}")
-        println("Valor de primera separacion ${segundaSeparacion}")
+      //  println("\nValor de primera separacion ${primeraSeparacion}")
+      //  println("\nValor de primera separacion ${segundaSeparacion}")
         var  listaLadosReq = listaArchivo.subList((primeraSeparacion+1), segundaSeparacion)
         
        // println("Esta es  primera separacion ${listaLadosReq}")
@@ -108,6 +108,7 @@ public class GrafoNoDirigido: Grafo {
         
        // println("Esta es la posicion de la primera separacion ${segundaSeparacion}")
         var listaLadosNoRequeridos = listaArchivo.subList((segundaSeparacion+1), listaArchivo.size)
+        //println("\nEsta es la lista de no Requeridos : ${listaLadosNoRequeridos}")
         //println("Esta es  primera separacion ${listaLadosNoRequeridos}")
 
         // Lectura de una linea para crear una Arista.
@@ -152,6 +153,7 @@ public class GrafoNoDirigido: Grafo {
           println("Esta es la expresion original de una linea ${newArista2}")
         */
            
+           // Aqui construimos el grafo Gr unicamente agregando las aristas requeridas
            listaLadosReq.forEach { line ->
             var aristaFiltro = line.split(" ")
             aristaFiltro = aristaFiltro.filterNot { it == "(" }
@@ -170,13 +172,33 @@ public class GrafoNoDirigido: Grafo {
             this.listaAristas.add(newArista)
         }
 
+        // Si flag es true entonces tambien le agregamos las aristas no requeridas para contruir el grafo RPP
+        if (flag) {
+            
+            listaLadosNoRequeridos.forEach { line ->
+            var aristaFiltro = line.split(" ")
+            aristaFiltro = aristaFiltro.filterNot { it == "(" }
+            aristaFiltro = aristaFiltro.filterNot { it == ")" }
+            aristaFiltro = aristaFiltro.filterNot { it == " " }
+            aristaFiltro = aristaFiltro.filterNot { it == "" }
+            aristaFiltro = aristaFiltro.filterNot { it == "coste" }
+            aristaFiltro = aristaFiltro.filterNot { it == "," }
+            var filtroSinComas = aristaFiltro[0].replace(",","")
+            var filtro = aristaFiltro[1].replace(")","")
+            var  filtrado = aristaFiltro.toMutableList()
+            filtrado.set(0,filtroSinComas)
+            filtrado.set(1,filtro)
+            
+            val newArista = Arista(filtrado[0].toInt(),filtrado[1].toInt(),filtrado[2].toDouble(),filtrado[2].toDouble())
+            this.listaAristas.add(newArista)
+        }
+        }
+
             this.grafo.forEachIndexed { index, lista ->
                 var aristasFiltrada = this.listaAristas.filter {it.primerV == index }
                 this.grafo.set(index, aristasFiltrada.toMutableList()) 
             }
 
-            println("Print del grafo luego de organizarlo : ${this.grafo.joinToString()}")
-             println("Print del listaAristas : ${this.listaAristas}")
         
     }
 
