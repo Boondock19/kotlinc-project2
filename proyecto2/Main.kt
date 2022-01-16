@@ -27,5 +27,15 @@ fun main(args: Array<String>) {
 
     
     print("\n ESTOS SON LOS VALORES DE LOS ALGORITMO 1")
-    var algoritmo1 = Algoritmo1(archivoALeer)
+    var algoritmo1 = HeuristicaRPP(archivoALeer)
+
+    var grafoDijkstra = GrafoNoDirigido("prueba2.txt",true)
+    var dijkstra = DijkstraGrafoNoDirijido(grafoDijkstra,0)
+    print("\nEste es el grafo generado por el archivo de dijkstra \n${grafoDijkstra.toString()}")
+    println("Costo del camino min desde 0 hasta 1 : ${dijkstra.costoHasta(1)}")
+    println("Costo del camino min desde 0 hasta 2 : ${dijkstra.costoHasta(2)}")
+    println("Costo del camino min desde 0 hasta 3 : ${dijkstra.costoHasta(3)}")
+    println("Costo del camino min desde 0 hasta 4 : ${dijkstra.costoHasta(4)}")
+    
+    
 }

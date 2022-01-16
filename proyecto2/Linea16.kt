@@ -30,6 +30,7 @@ fun Linea16 (g: GrafoNoDirigido, g1: GrafoNoDirigido) : GrafoNoDirigido {
     
     //Convertimos el grafo no dirigido original en un grafo dirigido para poder computar Johnson
     //y obtener los caminos de costo minimo
+    /* 
     var gdir = GrafoDirigido(n1)
     aristas1.forEach {lado ->
         var f = lado.cualquieraDeLosVertices()
@@ -40,12 +41,14 @@ fun Linea16 (g: GrafoNoDirigido, g1: GrafoNoDirigido) : GrafoNoDirigido {
     }
     var johnson = Johnson(gdir)
     var costos = johnson.obtenerMatrizDistancia()
-    
+    */
+
     aristas.forEach {elem ->
         var i = elem.cualquieraDeLosVertices()
         var j = elem.elOtroVertice(i)
         if ((v0.contains(i)) && (v0.contains(j))) {
-            var costoNuevo = costo[i][j]
+            var dijmod = DijkstraGrafoNoDirigido(g1,i)
+            var costoNuevo = dijmod.costoHasta(j)
             var aristaNueva = Arista(i,j,costoNuevo)
             listaAux.add(aristaNueva)
         }
@@ -56,6 +59,6 @@ fun Linea16 (g: GrafoNoDirigido, g1: GrafoNoDirigido) : GrafoNoDirigido {
     listaAux.forEach {e0 ->
         g0.agregarArista(e0)
     }
-    
     return g0
+
 }
