@@ -11,7 +11,9 @@ public class GrafoNoDirigido: Grafo {
         var listaVertices = mutableListOf<Int>()
         var listaLados =  mutableListOf<String>()
         var grafo = Array(numVertices) {mutableListOf<Arista>()}
+
         
+        var hashtable = hashSetOf<Int>()
     
     // Se construye un grafo a partir del número de vértices
     constructor(numDeVertices: Int) {
@@ -75,7 +77,7 @@ public class GrafoNoDirigido: Grafo {
     
     }
 
-    // Constructor para el proyecto 2, con doble peso en los lados
+    // Constructor para el proyecto 2, con doble peso en los lados. Este es del grafo RPP
 
     constructor(nombreArchivo: String, conPeso: Boolean, RPP:Boolean) {
         var flag = RPP
@@ -86,10 +88,24 @@ public class GrafoNoDirigido: Grafo {
         
         // Almacenamos data del grafo como cantidad de vertices y lados
         
-       this.numVertices = listaArchivo[2].split("VERTICES : ")[1].split(" ")[1].split(" ")[0].toInt()
-       println("\nVertices del grafo  : ${this.numVertices}")
-       this.numLados = listaArchivo[3].split("ARISTAS_REQ : ")[1].split(" ")[1].split(" ")[0].toInt()
-       println("\nlados requeridos del grafo : ${this.numLados}")
+        var numVerticesEspacios = listaArchivo[2].split("VERTICES : ")
+        numVerticesEspacios =  numVerticesEspacios.filterNot { it == " " }
+        numVerticesEspacios =  numVerticesEspacios.filterNot { it == "" }
+        var filtroSinEspacios = numVerticesEspacios[0].replace(" ","")
+     //   println("numVerticesEspacios : ${numVerticesEspacios}")
+      //  println("numVerticesEspacios filtrado : ${filtroSinEspacios}")
+        this.numVertices = filtroSinEspacios.toInt()
+        println("\nVertices del grafo  : ${this.numVertices}")
+        
+        var numLadosEspacios = listaArchivo[3].split("ARISTAS_REQ : ")
+        numLadosEspacios =  numLadosEspacios.filterNot { it == " " }
+        numLadosEspacios =  numLadosEspacios.filterNot { it == "" }
+        var filtroSinEspacios2 = numLadosEspacios[0].replace(" ","")
+      //  println("numLadosEspacios : ${numLadosEspacios}")
+    //    println("numLadosEspacios filtrado : ${filtroSinEspacios2}")
+        this.numLados = filtroSinEspacios2.toInt()
+            
+        // println("\nlados requeridos del grafo : ${this.numLados}")
 
        for ( i in 0..numVertices-1){
             this.listaVertices.add(i)
@@ -156,25 +172,34 @@ public class GrafoNoDirigido: Grafo {
            // Aqui construimos el grafo Gr unicamente agregando las aristas requeridas
            listaLadosReq.forEach { line ->
             var aristaFiltro = line.split(" ")
+           //   println("Este es  aristaFiltro antes de los filtros: ${aristaFiltro}")
             aristaFiltro = aristaFiltro.filterNot { it == "(" }
             aristaFiltro = aristaFiltro.filterNot { it == ")" }
             aristaFiltro = aristaFiltro.filterNot { it == " " }
             aristaFiltro = aristaFiltro.filterNot { it == "" }
             aristaFiltro = aristaFiltro.filterNot { it == "coste" }
             aristaFiltro = aristaFiltro.filterNot { it == "," }
-            var filtroSinComas = aristaFiltro[0].replace(",","")
             var filtro = aristaFiltro[1].replace(")","")
+            var splitComa = aristaFiltro[0].split(",")
+           // println("Este es splitComa antes de los filtros: ${splitComa}")
+           splitComa =splitComa.filterNot { it == " " }
+           splitComa =splitComa.filterNot { it == "" }
+            var filtroSinComas = aristaFiltro[0].replace(",","")
             var  filtrado = aristaFiltro.toMutableList()
             filtrado.set(0,filtroSinComas)
             filtrado.set(1,filtro)
+            
+         //   println("Este es  aristaFiltro : ${aristaFiltro}")
+         //   println("Este es filtroSinComas luego de los filtros: ${filtroSinComas}")
+         //   println("Este es splitComa : ${splitComa}")
+         //   println("Este es filtro : ${filtro}")
+         //   println("Este es filtrado : ${filtrado}")
             
             val newArista = Arista(filtrado[0].toInt(),filtrado[1].toInt(),filtrado[2].toDouble(),filtrado[2].toDouble())
             this.listaAristas.add(newArista)
         }
 
         // Si flag es true entonces tambien le agregamos las aristas no requeridas para contruir el grafo RPP
-        if (flag) {
-            
             listaLadosNoRequeridos.forEach { line ->
             var aristaFiltro = line.split(" ")
             aristaFiltro = aristaFiltro.filterNot { it == "(" }
@@ -192,8 +217,85 @@ public class GrafoNoDirigido: Grafo {
             val newArista = Arista(filtrado[0].toInt(),filtrado[1].toInt(),filtrado[2].toDouble(),filtrado[2].toDouble())
             this.listaAristas.add(newArista)
         }
-        }
+        
 
+            this.grafo.forEachIndexed { index, lista ->
+                var aristasFiltrada = this.listaAristas.filter {it.primerV == index }
+                this.grafo.set(index, aristasFiltrada.toMutableList()) 
+            }
+
+        
+    }
+
+     constructor(nombreArchivo: String, conPeso: Boolean, RPP:Boolean, Gr: Boolean) {
+        var flag = Gr
+        var n = 0
+      
+        //fun para leer y almacenar data de txts en forma de lista
+        
+        File(nombreArchivo).useLines{ lines -> lines.forEach { this.listaArchivo.add(it) }}
+        
+        // Almacenamos data del grafo como cantidad de vertices y lados
+        
+        var numVerticesEspacios = listaArchivo[2].split("VERTICES : ")
+        numVerticesEspacios =  numVerticesEspacios.filterNot { it == " " }
+        numVerticesEspacios =  numVerticesEspacios.filterNot { it == "" }
+        var filtroSinEspacios = numVerticesEspacios[0].replace(" ","")
+       // println("numVerticesEspacios : ${numVerticesEspacios}")
+        //println("numVerticesEspacios filtrado : ${filtroSinEspacios}")
+        this.numVertices = filtroSinEspacios.toInt()
+        //println("\nVertices del grafo  : ${this.numVertices}")
+        
+        var numLadosEspacios = listaArchivo[3].split("ARISTAS_REQ : ")
+        numLadosEspacios =  numLadosEspacios.filterNot { it == " " }
+        numLadosEspacios =  numLadosEspacios.filterNot { it == "" }
+        var filtroSinEspacios2 = numLadosEspacios[0].replace(" ","")
+        //println("numLadosEspacios : ${numLadosEspacios}")
+       // println("numLadosEspacios filtrado : ${filtroSinEspacios2}")
+        this.numLados = filtroSinEspacios2.toInt()
+
+
+       
+        var primeraSeparacion = listaArchivo.indexOf("LISTA_ARISTAS_REQ :")
+        var segundaSeparacion = listaArchivo.indexOf("LISTA_ARISTAS_NOREQ :")
+
+        var  listaLadosReq = listaArchivo.subList((primeraSeparacion+1), segundaSeparacion)
+        
+        
+           
+           // Aqui construimos el grafo Gr unicamente agregando las aristas requeridas
+           listaLadosReq.forEach { line ->
+            var aristaFiltro = line.split(" ")
+            aristaFiltro = aristaFiltro.filterNot { it == "(" }
+            aristaFiltro = aristaFiltro.filterNot { it == ")" }
+            aristaFiltro = aristaFiltro.filterNot { it == " " }
+            aristaFiltro = aristaFiltro.filterNot { it == "" }
+            aristaFiltro = aristaFiltro.filterNot { it == "coste" }
+            aristaFiltro = aristaFiltro.filterNot { it == "," }
+            var filtroSinComas = aristaFiltro[0].replace(",","")
+            var filtro = aristaFiltro[1].replace(")","")
+            var  filtrado = aristaFiltro.toMutableList()
+            filtrado.set(0,filtroSinComas)
+            filtrado.set(1,filtro)
+            
+            val newArista = Arista(filtrado[0].toInt(),filtrado[1].toInt(),filtrado[2].toDouble(),filtrado[2].toDouble())
+            this.listaAristas.add(newArista)
+            // aristas de forma (i,j)
+            var primerVertice = filtrado[0].toInt()
+            var segundoVertice = filtrado[1].toInt()
+
+            if (!this.hashtable.contains(primerVertice)) {
+                this.hashtable.add(primerVertice)
+            }
+
+            if (!this.hashtable.contains(segundoVertice)) {
+                this.hashtable.add(segundoVertice)
+            }
+   
+        }
+            this.numVertices = this.hashtable.size
+            this.grafo = Array(this.numVertices) {mutableListOf<Arista>()}
+            this.listaVertices = this.hashtable.toMutableList()
             this.grafo.forEachIndexed { index, lista ->
                 var aristasFiltrada = this.listaAristas.filter {it.primerV == index }
                 this.grafo.set(index, aristasFiltrada.toMutableList()) 
@@ -318,5 +420,31 @@ public class GrafoNoDirigido: Grafo {
             
         return " ${representacionGrafo}"
     
+     }
+
+     fun esConexo() : Boolean {
+        var conexo = true // asumimos que es conexo
+        // verificaremos que Gp sea conexo primero
+        this.listaVertices.forEach { v ->
+            var adyacentesV = this.adyacentes(v).toMutableList()
+            if (adyacentesV.size < 1) {
+                conexo = false // si consigue uno sin adyacentes, entonces no es conexo
+            } 
+        }
+
+        return conexo
+     }
+     
+     // que sea par es que todos sus vertices tengan un grado par, es decir, grado mod 2 = 0
+     fun esPar() : Boolean {
+         var par = true
+         this.listaVertices.forEach{ v ->
+            var gradoV = this.grado(v)
+            if (gradoV % 2 != 0) {  
+                par = false 
+            }
+         }
+         
+         return par
      }
 }

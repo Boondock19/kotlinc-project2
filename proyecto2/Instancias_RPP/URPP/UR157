@@ -2030,7 +2030,7 @@ LISTA_ARISTAS_REQ :
 ( 563, 969)   coste       7        7
 ( 122, 123)   coste      31       31
 ( 517, 518)   coste      30       30
-( 264,1000)   coste      22       22
+( 264, 1000)   coste      22       22
 ( 465, 746)   coste      33       33
 ( 507, 618)   coste      50       50
 LISTA_ARISTAS_NOREQ :
@@ -2270,7 +2270,7 @@ LISTA_ARISTAS_NOREQ :
 ( 257, 972)   coste      32       32
 ( 258, 808)   coste      59       59
 ( 261, 550)   coste      36       36
-( 262,1000)   coste      40       40
+( 262, 1000)   coste      40       40
 ( 265, 365)   coste      16       16
 ( 266, 267)   coste      51       51
 ( 266, 365)   coste      48       48
@@ -2363,8 +2363,8 @@ LISTA_ARISTAS_NOREQ :
 ( 364, 366)   coste      20       20
 ( 364, 367)   coste      36       36
 ( 364, 977)   coste      34       34
-( 366,1000)   coste      28       28
-( 367,1000)   coste      46       46
+( 366, 1000)   coste      28       28
+( 367, 1000)   coste      46       46
 ( 368, 605)   coste      22       22
 ( 368, 961)   coste      30       30
 ( 370, 794)   coste      42       42
@@ -2690,7 +2690,7 @@ LISTA_ARISTAS_NOREQ :
 ( 946, 959)   coste      54       54
 ( 950, 953)   coste      34       34
 ( 952, 953)   coste      38       38
-( 967,1000)   coste      45       45
+( 967, 1000)   coste      45       45
 ( 970, 989)   coste      10       10
 ( 971, 989)   coste      26       26
 ( 994, 996)   coste      17       17
