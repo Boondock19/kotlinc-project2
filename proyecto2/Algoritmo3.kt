@@ -11,9 +11,22 @@ fun Algoritmo3(g: GrafoNoDirigido) : MutableList<Arista> {
     var auxE = mutableListOf<Arista>()
     var auxV = mutableListOf<Int>()
 
-    for (i in 0..n-1) {
-        v_.add(i)
-        auxV.add(i)
+    if (n&2 != 0) {
+        throw Exception("El grafo no tiene un numero par de vertices")
+    }
+
+    aristas.forEach {arista ->
+        var i = arista.cualquieraDeLosVertices()
+        var j = arista.elOtroVertice(i)
+
+        if (!(v_.contains(i))) {
+            v_.add(i)
+            auxV.add(i)
+        }
+        if (!(v_.contains(j))) {
+            v_.add(j)
+            auxV.add(i)
+        }
     }
 
     aristas.forEach {arista ->
