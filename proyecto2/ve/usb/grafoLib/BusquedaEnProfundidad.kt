@@ -17,6 +17,7 @@ public class BusquedaEnProfundidad(val g: Grafo, val orden: MutableList<Int> = m
     var contador : Int 
     var vertices = mutableListOf<Int>()
     var ordenTopologicoLista = mutableListOf<Int>()
+    var cEuleriano = mutableListOf<Arista>()
     init {
 	
     // Se ejecuta DFS
@@ -63,6 +64,10 @@ public class BusquedaEnProfundidad(val g: Grafo, val orden: MutableList<Int> = m
         this.listaDeVertices.get(u).put("contador",this.contador)
         adyacencia.forEach { lado ->
             var otroV = lado.elOtroVertice(u)
+            if (otroV != 0) {
+                var arco = Arista(lado.primerV,lado.segundoV)
+                this.cEuleriano.add(arco) //Añado el lado que visita menos el que sumidero = 0
+            }
             if (this.listaDeVertices.get(otroV).get("color")==Color.BLANCO) {
                 this.listaDeVertices.get(otroV).put("predecesor",u)
                 dfsVisit(g,otroV)                

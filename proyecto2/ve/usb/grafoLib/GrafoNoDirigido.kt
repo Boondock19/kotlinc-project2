@@ -195,7 +195,7 @@ public class GrafoNoDirigido: Grafo {
          //   println("Este es filtro : ${filtro}")
          //   println("Este es filtrado : ${filtrado}")
             
-            val newArista = Arista(filtrado[0].toInt(),filtrado[1].toInt(),filtrado[2].toDouble(),filtrado[2].toDouble())
+            val newArista = Arista(filtrado[0].toInt() - 1,filtrado[1].toInt() - 1,filtrado[2].toDouble(),filtrado[2].toDouble())
             this.listaAristas.add(newArista)
         }
 
@@ -214,7 +214,7 @@ public class GrafoNoDirigido: Grafo {
             filtrado.set(0,filtroSinComas)
             filtrado.set(1,filtro)
             
-            val newArista = Arista(filtrado[0].toInt(),filtrado[1].toInt(),filtrado[2].toDouble(),filtrado[2].toDouble())
+            val newArista = Arista(filtrado[0].toInt() - 1,filtrado[1].toInt() - 1 ,filtrado[2].toDouble(),filtrado[2].toDouble())
             this.listaAristas.add(newArista)
         }
         
@@ -278,11 +278,11 @@ public class GrafoNoDirigido: Grafo {
             filtrado.set(0,filtroSinComas)
             filtrado.set(1,filtro)
             
-            val newArista = Arista(filtrado[0].toInt(),filtrado[1].toInt(),filtrado[2].toDouble(),filtrado[2].toDouble())
+            val newArista = Arista(filtrado[0].toInt()  - 1,filtrado[1].toInt()  - 1,filtrado[2].toDouble(),filtrado[2].toDouble())
             this.listaAristas.add(newArista)
             // aristas de forma (i,j)
-            var primerVertice = filtrado[0].toInt()
-            var segundoVertice = filtrado[1].toInt()
+            var primerVertice = filtrado[0].toInt() - 1
+            var segundoVertice = filtrado[1].toInt() - 1
 
             if (!this.hashtable.contains(primerVertice)) {
                 this.hashtable.add(primerVertice)
@@ -309,12 +309,13 @@ public class GrafoNoDirigido: Grafo {
         val newArista = a
         var aristasFiltrados = mutableListOf<Arista>()
         
+        /* 
         this.listaAristas.forEachIndexed { index,arista ->
             if ((newArista.primerV == arista.primerV && newArista.segundoV == arista.segundoV) || (newArista.primerV == arista.segundoV && newArista.segundoV == arista.primerV)) {
                throw Exception("El arco ${a} ya se encuentra en el grafo")
                 }
         }
-        
+        */
         
         this.listaAristas.add(newArista)
         aristasFiltrados.add(newArista)
@@ -325,7 +326,7 @@ public class GrafoNoDirigido: Grafo {
         
         var stringGrafo = this.toString()
         
-        return println("La arista ${a} fue agregado satisfactoriamente al grafo : ${stringGrafo}")
+       // return println("La arista ${a} fue agregado satisfactoriamente al grafo : ${stringGrafo}")
 
     }
 

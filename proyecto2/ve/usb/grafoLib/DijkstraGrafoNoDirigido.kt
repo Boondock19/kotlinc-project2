@@ -6,7 +6,7 @@ DESCRIPCION: Implementación del algoritmo de Dijkstra para encontrar los camino
 fuente s fijo, a partir de una clases que contiene funciones relacionada y/o necesarias para la
 implementacion.
 */
-public class DijkstraGrafoNoDirijido(val g: GrafoNoDirigido, val s: Int) {
+public class DijkstraGrafoNoDirigido(val g: GrafoNoDirigido, val s: Int) {
 
     var n = g.obtenerNumeroDeVertices()
     var pred = Array(n){(-1)}
